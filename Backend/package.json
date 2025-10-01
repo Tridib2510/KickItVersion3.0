@@ -1,0 +1,41 @@
+{
+  "name": "matchup",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+<<<<<<< HEAD
+    "@google/genai": "^1.21.0",
+    "@google/generative-ai": "^0.24.1",
+=======
+>>>>>>> eef0194b5a9ec19179a3801f4c2173aa9aeaaec3
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.3",
+    "cloudinary": "^2.5.1",
+    "cookie-parser": "^1.4.7",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "email-existence": "^0.1.6",
+    "email-validator": "^2.0.4",
+    "email-verifier": "^0.4.1",
+    "express": "^4.21.2",
+    "express-fileupload": "^1.5.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^5.13.22",
+    "multer": "^1.4.5-lts.1",
+<<<<<<< HEAD
+    "node-fetch": "^3.3.2",
+=======
+>>>>>>> eef0194b5a9ec19179a3801f4c2173aa9aeaaec3
+    "nodemailer": "^6.10.0",
+    "socket.io": "^4.8.1",
+    "validator": "^13.12.0"
+  }
+}

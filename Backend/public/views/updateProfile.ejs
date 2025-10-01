@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="/updateProfile.css">
+    
+</head>
+<body>
+    <div id="x" aria-placeholder="<%= data.name %>."></div>
+    <form class="type-title" id="alter_form" enctype="multipart/form-data">
+    <div class="profile-container">
+        <!-- Left Side (User Info) -->
+   
+        <div class="profile-info">
+            <h1>
+                <label for="name">Name:</label>
+                <input type="text" id="name" placeholder="<%= data.name %>." name="<%= data.name %>." >
+            </h1>
+            <p>
+                <label for="description">Description:</label>
+                <input type="text" id="description" placeholder="<%= data.Description %>." name="<%= data.Description %>." >
+            </p>
+            <p>
+                <label for="club">Club:</label>
+                <input type="text" id="club" placeholder="<%= data.club %>." name="<%= data.club %>." >
+           
+            <p class="email">Email:<a href="<%= data.email %>"><%= data.email %></a></p>
+        </div>
+        <div>
+           
+           
+            
+    </form>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" id="image" name="image">
+       
+        <button onclick="alter_name();" type="submit" >update</button></a>
+    </form>
+    </div>
+      
+        </div>
+        
+    </div>
+    
+    <script src="/updateProfile.js"></script>
+</body>
+</html>

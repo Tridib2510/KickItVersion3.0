@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbox</title>
+    <link href= "/home.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    
+    <div class="header">
+        
+        <% if (user._id==='default') { %>
+            <a href="http://127.0.0.1:8000/KickIt/signUp/">
+            <button>Sign Up</button>
+        
+        </a>
+        <a href="http://127.0.0.1:8000/KickIt/login/">
+            <button>Login</button>
+            </a>
+          <% } else { %>
+            <img src="/<%= user.image %>" alt="Profile Picture" class="profile-pic">
+            <a href="http://127.0.0.1:8000/KickIt/profile/<%= user._id %>">
+            <button type="button">Profile</button>
+            </a>
+            <a href="http://127.0.0.1:8000/KickIt/logout/">
+                <button type="button">Logout</button>
+                </a>
+          <% } %>
+       
+    </div>
+<h1>
+    
+      
+</h1>
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box">
+            <% datas.forEach((item) => { %>
+            <button><%= item.eventName %></button>   
+            <% }); %>
+        </div>
+    </div>       
+         
+    <a href="http://127.0.0.1:8000/KickIt/home/?sports=football">
+        <button id="Football"> Football</button></a>
+        <a href="http://127.0.0.1:8000/KickIt/home/?sports=cricket">
+        <button id="Cricket"> Cricket</button></a>
+        <a href="http://127.0.0.1:8000/KickIt/home/?sports=basketball">
+        <button id="BasketBall">BasketBall</button></a>
+        <a href="http://127.0.0.1:8000/KickIt/home/">
+         <button id="All">All Events</button></a>
+            
+            <script defer src="/socket.io/socket.io.js"></script>
+            <script defer src="script.js"></script>
+</body>
+</html>
