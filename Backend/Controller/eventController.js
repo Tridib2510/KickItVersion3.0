@@ -14,21 +14,12 @@ const badgeModel=require('../models/badgesmodels')
 const ApiFeature=require('../utils/ApiFeature')
 const { Mongoose } = require('mongoose')
 
-<<<<<<< HEAD
 const {GoogleGenerativeAI}=require('@google/generative-ai')
-=======
->>>>>>> eef0194b5a9ec19179a3801f4c2173aa9aeaaec3
 
 
 
 exports.getAllEvents=catchAsync(async (req,res,next)=>{
 
-<<<<<<< HEAD
-=======
-
-
-   
->>>>>>> eef0194b5a9ec19179a3801f4c2173aa9aeaaec3
    console.log(req.query)
 
    const options = {
@@ -76,7 +67,6 @@ const event=new ApiFeature(eventModel,req.query,req.query,).filter().paginate()
   
 })
 
-<<<<<<< HEAD
 exports.CreateImage=catchAsync(async(req,res,next)=>{
    const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
    try {
@@ -111,8 +101,6 @@ console.log(event)
    })
 })
 
-=======
->>>>>>> eef0194b5a9ec19179a3801f4c2173aa9aeaaec3
 exports.isActive=catchAsync(async(req,res,next)=>{
   
    const event=await eventModel.find()
