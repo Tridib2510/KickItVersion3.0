@@ -37,13 +37,10 @@ router.route('/createEvent').get(eventController.getCreateEvent).post(eventContr
 
 router.route('/home').get(eventController.isActive,eventController.getAllEvents)
 
-<<<<<<< HEAD
 router.route('/getEvent/:eventId').get(eventController.getEvent)
 
 router.route('/generateImage/:location').get(eventController.CreateImage)
 
-=======
->>>>>>> eef0194b5a9ec19179a3801f4c2173aa9aeaaec3
 router.route('/profile').get(authController.protect,userController.getProfile)
 
 router.route('/profileUpdate').get(authController.protect,userController.getUpdateProfile).patch(upload.single('file'),userController.updateProfile).post(userController.makeChanges,upload.single("image"),userController.updateProfilePicture)
