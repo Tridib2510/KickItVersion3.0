@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import clsx from "clsx"
-import { useAuthStore } from "../../store/Auth"
 import JoinRequest from "../AcceptUser/AcceptUser"
 
 interface Notification {
@@ -41,8 +40,7 @@ const NotificationsPage: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [activeJoinRequest, setActiveJoinRequest] = useState<Notification | null>(null)
   const [checkNotification, setCheckNotification] = useState(false)
-  const id = useAuthStore((state) => state.userId)
-
+   setCheckNotification(false)
   // Fetch persisted notifications / join requests
   useEffect(() => {
     const options: Options = {
