@@ -5,7 +5,7 @@ import { io, Socket } from "socket.io-client"
 const BackendKey=import.meta.env.VITE_BACKEND_KEY
  
 type Contact = {
-  id: string;  
+  id: string;   
   name: string;
   avatar: string;
   user:string
