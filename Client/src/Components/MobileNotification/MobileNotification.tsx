@@ -39,8 +39,7 @@ const BackendKey = import.meta.env.VITE_BACKEND_KEY
 const NotificationsPage: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [activeJoinRequest, setActiveJoinRequest] = useState<Notification | null>(null)
-  const [checkNotification, setCheckNotification] = useState(false)
-   setCheckNotification(false)
+  const checkNotification=false
   // Fetch persisted notifications / join requests
   useEffect(() => {
     const options: Options = {
