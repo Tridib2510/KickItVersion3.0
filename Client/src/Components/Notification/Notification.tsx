@@ -182,7 +182,15 @@ const NotificationDropdown: React.FC = () => {
     <div className="relative" ref={dropdownRef}>
       {/* Bell Icon */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+         if (window.innerWidth < 768) {
+        window.location.href='./notification'
+      }   
+      else{
+        setIsOpen(!isOpen)
+      }  
+          
+        }}
         className="relative hover:text-indigo-400 transition-colors"
       >
         <Bell size={22} />
@@ -202,7 +210,8 @@ const NotificationDropdown: React.FC = () => {
       >
         <div className="flex items-center justify-between px-4 py-2 border-b">
           <span className="font-semibold text-gray-800">Notifications</span>
-          <button onClick={() => setIsOpen(false)} className="text-gray-500 hover:text-gray-700">
+          <button onClick={() => {setIsOpen(false)
+            }} className="text-gray-500 hover:text-gray-700">
             <X size={18} />
           </button>
         </div>

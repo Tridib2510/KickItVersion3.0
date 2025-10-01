@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
   const toggleMenu = () => setIsOpen(!isOpen)
 
-  const [profile, isProfile] = useState("https://randomuser.me/api/portraits/men/32.jpg")
+  const [profile, setProfile] = useState("https://randomuser.me/api/portraits/men/32.jpg")
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   interface Options {
@@ -40,11 +40,11 @@ const Navbar: React.FC = () => {
         .then((res) => res.json())
         .then((data) => {
           console.log(data)
-          isProfile(data.user.image)
+          setProfile(data.user.image)
           setIsLoggedIn(true)
         })
     }
-  }, [localStorage.getItem("token")])
+  }, [token])
 
   return (
     <nav className="w-full bg-gray-900 text-white shadow-md fixed top-0 left-0 z-50">
@@ -54,8 +54,8 @@ const Navbar: React.FC = () => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
-          <a href="#" className="hover:text-indigo-400 transition-colors">Home</a>
-          <a href="events" className="hover:text-indigo-400 transition-colors">Events</a>
+          <Link to="/" className="hover:text-indigo-400 transition-colors">Home</Link>
+          <Link to="/events" className="hover:text-indigo-400 transition-colors">Events</Link>
           <a href="#pricing" className="hover:text-indigo-400 transition-colors">Pricing</a>
           <CreateEventPopup />
 
@@ -116,17 +116,27 @@ const Navbar: React.FC = () => {
 
         {/* Vertical Menu */}
         <div className="flex flex-col space-y-6 px-6 mt-8">
-          <a href="#" className="hover:text-indigo-400 transition-colors" onClick={toggleMenu}>Home</a>
-          <a href="events" className="hover:text-indigo-400 transition-colors" onClick={toggleMenu}>Events</a>
-          <a href="#pricing" className="hover:text-indigo-400 transition-colors" onClick={toggleMenu}>Pricing</a>
-          <CreateEventPopup />
+          <Link to="/" className="hover:text-indigo-400 transition-colors" onClick={toggleMenu}>
+            Home
+          </Link>
+          <Link to="/events" className="hover:text-indigo-400 transition-colors" onClick={toggleMenu}>
+            Events
+          </Link>
+          <a href="#pricing" className="hover:text-indigo-400 transition-colors" onClick={toggleMenu}>
+            Pricing
+          </a>
+          <div onClick={toggleMenu}>
+            <CreateEventPopup />
+          </div>
 
           {isLoggedIn ? (
-            <div className="mt-6">
+            <div className="mt-6" onClick={toggleMenu}>
               <NotificationDropdown />
             </div>
           ) : (
-            <LoginPopup Text={"Get Started"} />
+            <div onClick={toggleMenu}>
+              <LoginPopup Text={"Get Started"} />
+            </div>
           )}
         </div>
       </div>
