@@ -4,7 +4,11 @@ import { Button } from "../ui/button";
 import { io,Socket} from "socket.io-client"
 import { useAuthStore } from "../../store/Auth";
 const BackendKey=import.meta.env.VITE_BACKEND_KEY
-
+import Soccer from "../../assets/Soccer.png"
+import Cricket from "../../assets/Cricket.png"
+import Badminton from "../../assets/Badminton.png"
+import Tennis from "../../assets/Tennis.png"
+import Basketball from "../../assets/Basketball.png"
 
 type Event = {
   id: number;
@@ -14,6 +18,7 @@ type Event = {
   location: string;
   description: string;
   image: string;
+  activity:string
 };
 
 // const events: Event[] = [
@@ -81,7 +86,8 @@ useEffect(()=>{
   date:e.date,
   location:e.venue,
   description:e.Description,
-  image:e.image?e.image:"/src/assets/Soccer.png"
+  image:e.image?e.image:"/src/assets/Soccer.png",
+  activity:e.activity
   
 })
     }
@@ -119,7 +125,7 @@ useEffect(()=>{
             >
               {/* Event Image */}
               <img
-                src={event.image}
+                src={event.activity==='Soccer'?Soccer:event.activity==='Cricket'?Cricket:event.activity==='Badminton'?Badminton:event.activity==='Tennis'?Tennis:Basketball}
                 alt={event.title}
                 className="w-full h-48 object-cover"
               />

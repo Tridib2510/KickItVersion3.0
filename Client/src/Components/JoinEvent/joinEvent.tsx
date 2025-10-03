@@ -6,6 +6,11 @@ import EventDetailsRegister from "../EventDetailsRegister/EventDetailsRegister"
 import { io,Socket} from "socket.io-client"
 import { Link } from "react-router-dom";
 import Soccer from "../../assets/Soccer.png"
+import Cricket from "../../assets/Cricket.png"
+import Badminton from "../../assets/Badminton.png"
+import Tennis from "../../assets/Tennis.png"
+import Basketball from "../../assets/Basketball.png"
+
 
 console.log('SOCCER')
 console.log(Soccer)
@@ -157,7 +162,7 @@ console.log(socket)
             >
               <Link to={`./${event.id}`}>
               <img
-                src={event.image}
+                src={event.activity==='Soccer'?Soccer:event.activity==='Cricket'?Cricket:event.activity==='Badminton'?Badminton:event.activity==='Tennis'?Tennis:Basketball}
                 alt={event.title}
                 className="w-full h-48 object-cover"
               />
