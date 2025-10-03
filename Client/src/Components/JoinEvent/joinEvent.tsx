@@ -5,7 +5,10 @@ import { useAuthStore } from "../../store/Auth";
 import EventDetailsRegister from "../EventDetailsRegister/EventDetailsRegister"
 import { io,Socket} from "socket.io-client"
 import { Link } from "react-router-dom";
+import Soccer from "../../assets/Soccer.png"
 
+console.log('SOCCER')
+console.log(Soccer)
 
 type Event = {
   id: string;
@@ -67,6 +70,7 @@ console.log(socket)
             playersJoined: string[];
             joiningRequest:string[],
             activity: string;
+            image:string
           }[];
         }) => {
           const eventsList: Event[] = data.data.map((e) => ({
@@ -79,8 +83,7 @@ console.log(socket)
             description: e.Description,
             activity: e.activity,
             joiningRequest:e.joiningRequest,
-            image:
-              "https://images.unsplash.com/photo-1551836022-4c4c79ecde51?w=800&q=80",
+            image:e.image?e.image:"/src/assets/Soccer.png",            
             playersJoined: e.playersJoined,
           }));
           setEvents(eventsList);

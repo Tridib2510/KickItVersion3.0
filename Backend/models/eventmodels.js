@@ -77,6 +77,9 @@ const Schema=new mongoose.Schema({
 "active":{
     type:String,
     default:'Active'
+},
+"image":{
+    type:String
 }
 
 
@@ -89,6 +92,28 @@ Schema.pre('save',async function(next){
         }
      }
     
+     next()
+  })
+
+  Schema.pre('save',async function(next){
+    
+    console.log(this.sports)
+     if(this.activity==='Soccer'){
+           this.image='/src/assets/Soccer.png'
+     }
+     if(this.activity==='Cricket'){
+        this.image='/src/assets/Cricket.png'
+     }
+     if(this.activity==='Badminton'){
+        this.image='/src/assets/Badminton.png'
+     }
+     if(this.activity==='Basketball'){
+        this.image='/src/assets/Basketball.png'
+     }
+     if(this.activity==='Tennis'){
+        this.image='/src/assets/Tennis.png'
+
+     }
      next()
   })
 

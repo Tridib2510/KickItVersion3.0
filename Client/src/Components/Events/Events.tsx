@@ -68,16 +68,20 @@ useEffect(()=>{
   fetch(`${BackendKey}/KickIt/home`)
   .then((response)=>response.json())
   .then(data=>{
+   
     let Events: Event[] = [];
     data.data.slice(0,3).forEach((e:any)=>{
-      
+     if(e.activity==='Soccer'){
+      console.log('soccer')
+      console.log(e)
+     }
       Events.push({
   id:e._id,
   title:e.eventName,
   date:e.date,
   location:e.venue,
   description:e.Description,
-  image:"https:images.unsplash.com/photo-1551836022-4c4c79ecde51?w=800&q=80"
+  image:e.image?e.image:"/src/assets/Soccer.png"
   
 })
     }

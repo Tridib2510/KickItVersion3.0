@@ -8,7 +8,9 @@ import { Textarea } from "../ui/textarea"
 import toast from "react-hot-toast"
 import { Label } from "../ui/label"
 import { Calendar, Clock, Trophy } from "lucide-react"
-const Backend=import.meta.env.VITE_BACKEND_KEY
+
+const Backend = import.meta.env.VITE_BACKEND_KEY
+
 export function CreateEventPopup() {
   const [formData, setFormData] = useState({
     eventName: "",
@@ -19,76 +21,69 @@ export function CreateEventPopup() {
     time: "",
     sport: "",
   })
-interface Options {
-      method: string;
-      credentials: RequestCredentials;//RequestCredentials includes 'include', 'same-origin', or 'omit'
-      headers: {
-        'Content-Type': string;
-      };
-      body: string;
-    }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  interface Options {
+    method: string
+    credentials: RequestCredentials // 'include', 'same-origin', or 'omit'
+    headers: {
+      'Content-Type': string
+    }
+    body: string
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
   }
 
-  const handleSubmit =  (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-   const form=new FormData(e.currentTarget)
-       try {
-        const options :Options= {
-         method:'POST',
-          // This ensures cookies are included in the request
-          credentials:'include',
-      headers: {
-      'Content-Type': 'application/json',  // This was the problem We have to manually set headers to allow Content-Type:'application /json' otherwise we can not send it together with our credetials
-      
-  },
-  body:JSON.stringify({
-     eventName:form.get('eventName'),
-     activity:form.get('sport'),
-     venue:form.get('venue'),
-     date:form.get('date'),
-     time:form.get('time'),
-     Description:form.get('description'),
-     playersRequired:form.get('playersRequired')
-     
-  })
-     }
-       
-     fetch(`${Backend}/KickIt/createEvent`,options).then(res=>res.json())
-    .then(data=>{
-        if (data.status==='fail'||data.status==='Error') {
-            
-            throw new Error(data.message);
-        }
-        toast.success('Event Created')
-       setFormData({
-          eventName: "",
-          venue: "",
-          description: "",
-          playersRequired: "",
-          date: "",
-          time: "",
-          sport: "",
-        })
-    
-    })
-    
-    
-    } catch (error) {
-        toast.error('Something went wrong Please try again')
-        
-       }
-       
+    const form = new FormData(e.currentTarget)
 
+    try {
+      const options: Options = {
+        method: "POST",
+        credentials: "include", // ensures cookies are sent
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          eventName: form.get("eventName"),
+          activity: form.get("sport"),
+          venue: form.get("venue"),
+          date: form.get("date"),
+          time: form.get("time"),
+          Description: form.get("description"),
+          playersRequired: form.get("playersRequired"),
+        }),
+      }
+
+      fetch(`${Backend}/KickIt/createEvent`, options)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status === "fail" || data.status === "Error") {
+            throw new Error(data.message)
+          }
+          toast.success("Event Created")
+          setFormData({
+            eventName: "",
+            venue: "",
+            description: "",
+            playersRequired: "",
+            date: "",
+            time: "",
+            sport: "",
+          })
+        })
+    } catch (error) {
+      toast.error("Something went wrong. Please try again")
+    }
   }
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-       <a href="#" className="hover:text-indigo-400 transition-colors">Create Event</a>
+        <a href="#" className="hover:text-indigo-400 transition-colors">Create Event</a>
       </DialogTrigger>
 
       <DialogContent className="max-w-lg rounded-2xl p-6">
@@ -139,12 +134,26 @@ interface Options {
             </div>
           </div>
 
-          {/* Sport */}
+          {/* Sport Dropdown */}
           <div>
             <Label htmlFor="sport">Sport</Label>
             <div className="flex items-center">
               <Trophy className="w-4 h-4 mr-2 text-gray-500" />
-              <Input id="sport" name="sport" value={formData.sport} onChange={handleChange} placeholder="Enter sport (e.g. Football)" required />
+              <select
+                id="sport"
+                name="sport"
+                value={formData.sport}
+                onChange={handleChange}
+                required
+                className="border rounded-md px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option value="">Select a sport</option>
+                <option value="Soccer">Soccer</option>
+                <option value="Cricket">Cricket</option>
+                <option value="Badminton">Badminton</option>
+                <option value="Tennis">Tennis</option>
+                <option value="Basketball">Basketball</option>
+              </select>
             </div>
           </div>
 
