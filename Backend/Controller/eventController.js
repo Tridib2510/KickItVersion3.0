@@ -10,6 +10,7 @@ const AppError=require('../utils/appError')
 const userModel=require('../models/usermodels')
 const eventModel=require('../models/eventmodels')
 const badgeModel=require('../models/badgesmodels')
+const chatModel=require('../models/chatmodel')
 
 const ApiFeature=require('../utils/ApiFeature')
 const { Mongoose } = require('mongoose')
@@ -67,6 +68,27 @@ const event=new ApiFeature(eventModel,req.query,req.query,).filter().paginate()
   
 })
 
+exports.promoteEvent=catchAsync(async(req,res,next)=>{
+  const promoteEvent=await eventModel.find({promote:true})
+  
+  return res.json({
+   promoteEvent
+  })
+
+
+}) 
+
+exports.getPrevChats=catchAsync(async(req,res,next)=>{
+   const receiver=req.params.eventId
+   const chats=await chatModel.find({receiver:receiver,})
+   console.log('chats')
+   console.log(chats)
+   return res.status(200).json({
+      chats,
+      sender:chats.sender
+   })
+})
+
 exports.CreateImage=catchAsync(async(req,res,next)=>{
    const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
    try {
@@ -89,7 +111,7 @@ exports.getEvent=catchAsync(async(req,res,next)=>{
    const id=req.cookies.token 
    const decode=jwt.verify(id,process.env.JWT_SECRET)
    const user=await userModel.findById(decode.id)
-   console.log('helloo')
+   
    const currentEvent=req.params.eventId
 
   const event=await eventModel.findById(currentEvent).populate({
@@ -401,13 +423,17 @@ exports.joinRequest=catchAsync(async(req,res,next)=>{
 exports.getJoinedEvents=catchAsync(async(req,res,next)=>{
         const id=req.cookies.token
         const decode=jwt.verify(id,process.env.JWT_SECRET)
+        const user=await userModel.findById(decode.id)
+        console.log('username2')
+        console.log(user.username)
         const event=new ApiFeature(eventModel,req.query,req.query).filter().paginate()
         const data=await event.query 
 
        console.log('Test case getJoinedEvents passed')
       //   event=await data.populate('createdBy')
         return res.status(200).json({
-        Event:data
+        Event:data,
+        user:user.username
     })
 })
 

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Send, X, MessageCircle } from "lucide-react";
 import { io, Socket } from "socket.io-client"
+import { useAuthStore } from "../../store/Auth";
 const BackendKey=import.meta.env.VITE_BACKEND_KEY
  
 type Contact = {
@@ -15,7 +16,8 @@ type Contact = {
 type Message = {
   id: number;
   text: string;
-  sender: string
+  sender: string;
+  send:string;
 };
 
 // const contacts: Contact[] = [
@@ -25,7 +27,7 @@ type Message = {
 // ];
 
 export default function WhatsAppPopup() {
-
+const userid = useAuthStore((state) => state.userId);
 const [contacts,setContacts]=useState<Contact[]>([])
 const [socket, setSocket] = useState<Socket | null>(null)
 const [open, setOpen] = useState(false);
@@ -38,21 +40,26 @@ function joinEventGroup(id:String){
 }
 
 useEffect(()=>{
+  console.log('message')
 
 if (activeContact?.id) {
+  console.log(activeContact)
+   console.log(contacts)
    if(messages[activeContact.id][messages[activeContact.id].length-1].sender==='me'){
-   console.log(messages[activeContact.id])
-    socket?.send(messages[activeContact.id],activeContact.user,activeContact.id);
+  
+    socket?.send(messages[activeContact.id],activeContact.user,activeContact.id,userid);
    }
 }
 },[messages])
 
 useEffect(()=>{
+   console.log(open)
+
   const s= io(BackendKey)
   setSocket(s)
   s?.on('send',(message,name,eventId)=>{
-    console.log(message)
-        const newMsg: Message = { id: Date.now(), text: message, sender:name };
+    console.log(activeContact)
+        const newMsg: Message = { id: Date.now(), text: message, sender:name,send:"notNow" };
    console.log(newMsg.text)
    console.log(eventId)
     setMessages((prev) => ({
@@ -62,7 +69,29 @@ useEffect(()=>{
 
   
  })
-},[])
+
+
+},[open])
+
+useEffect(()=>{
+  console.log('loadMessage')
+if(activeContact)
+fetch(`${BackendKey}/KickIt/getPrevChats/${activeContact?.id}`,{
+  credentials:"include",
+})
+.then(res=>res.json())
+.then(data=>{
+  for(let i=0;i<data.chats.length;i++){
+    const eventId=data.chats[i].receiver
+    const newMsg: Message = { id: Date.now(), text: data.chats[i].message, sender:data.chats[i].sender===userid?'me':data.chats[i].senderName,send:'not now' }
+    console.log(data.chats[i])
+    setMessages((prev) => ({
+     ...prev,  
+  [eventId]: [...(prev[eventId] || []), newMsg],
+}));
+  }
+})
+},[activeContact])
 
 useEffect(()=>{
   fetch(`${BackendKey}/KickIt/joinedEvents`,{
@@ -70,13 +99,14 @@ useEffect(()=>{
   })
   .then((res)=>res.json())
   .then((data)=>{
-    console.log(data.Event.length)
+    console.log('data.Event.length')
+    console.log(data)
     const Contacts:Contact[]=[]
     for(let i=0;i<data.Event.length;i++){
      console.log(data.Event[i])
      const id=data.Event[i]._id
      const name=data.Event[i].eventName
-     const user=data.Event[i].createdBy.username
+     const user=data.user
      const avatar=data.Event[i].createdBy.image
      Contacts.push({ id: id, name:name,user:user, avatar:avatar, lastMessage: "" })
     }
@@ -94,7 +124,7 @@ useEffect(()=>{
 
   const handleSend = () => {
     if (!input.trim() || !activeContact) return;
-    const newMsg: Message = { id: Date.now(), text: input, sender: "me" };
+    const newMsg: Message = { id: Date.now(), text: input, sender: "me",send:"now"};
     setMessages((prev) => ({
       ...prev,
       [activeContact.id]: [...(prev[activeContact.id] || []), newMsg],
@@ -208,7 +238,10 @@ useEffect(()=>{
             {/* Back to contacts button */}
             {activeContact && (
               <button
-                onClick={() => setActiveContact(null)}
+                onClick={() => {
+                  setMessages({})
+                  setActiveContact(null)
+                }}
                 className="w-full text-center py-1 text-sm text-green-600 hover:bg-green-100 dark:hover:bg-slate-700"
               >
                 Back to Contacts

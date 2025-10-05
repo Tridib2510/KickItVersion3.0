@@ -35,6 +35,8 @@ const reviewRouter=require('./reviewRoutes')
 
 router.route('/createEvent').get(eventController.getCreateEvent).post(eventController.createEvent)
 
+router.route('/getPrevChats/:eventId').get(eventController.getPrevChats)
+
 router.route('/home').get(eventController.isActive,eventController.getAllEvents)
 
 router.route('/getEvent/:eventId').get(eventController.getEvent)

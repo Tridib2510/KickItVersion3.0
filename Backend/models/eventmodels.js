@@ -95,27 +95,27 @@ Schema.pre('save',async function(next){
      next()
   })
 
-  Schema.pre('save',async function(next){
+//   Schema.pre('save',async function(next){
     
-    console.log(this.sports)
-     if(this.activity==='Soccer'){
-           this.image='/src/assets/Soccer.png'
-     }
-     if(this.activity==='Cricket'){
-        this.image='/src/assets/Cricket.png'
-     }
-     if(this.activity==='Badminton'){
-        this.image='/src/assets/Badminton.png'
-     }
-     if(this.activity==='Basketball'){
-        this.image='/src/assets/Basketball.png'
-     }
-     if(this.activity==='Tennis'){
-        this.image='/src/assets/Tennis.png'
+//     console.log(this.sports)
+//      if(this.activity==='Soccer'){
+//            this.image='/assets/Soccer-De2BKXRa.png'
+//      }
+//      if(this.activity==='Cricket'){
+//         this.image='/assets/Cricket-De2BKXRa.png'
+//      }
+//      if(this.activity==='Badminton'){
+//         this.image='/assets/Badminton-De2BKXRa.png'
+//      }
+//      if(this.activity==='Basketball'){
+//         this.image='/src/assets/Basketball.png'
+//      }
+//      if(this.activity==='Tennis'){
+//         this.image='/src/assets/Tennis.png'
 
-     }
-     next()
-  })
+//      }
+//      next()
+//   })
 
 
 const model=mongoose.model('Events',Schema)
