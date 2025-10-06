@@ -9,6 +9,7 @@ import Cricket from "../../assets/Cricket.png"
 import Badminton from "../../assets/Badminton.png"
 import Tennis from "../../assets/Tennis.png"
 import Basketball from "../../assets/Basketball.png"
+import Spinner from "../Spinner.tsx/Spinner";
 
 type Event = {
   id: number;
@@ -61,6 +62,7 @@ const EventsSection: React.FC = () => {
 const [events, setEvents]= useState<Event[]>([]);
 const [userId,setUserId]=useState<string>()
 const [socket2, setSocket] = useState<Socket | null>(null)
+const [loading,setLoading]=useState(false)
 useEffect(()=>{
 const socket=io(`${BackendKey}`)
 setSocket(socket)
@@ -70,6 +72,8 @@ console.log(socket2)
 },[])
 
 useEffect(()=>{
+  try{
+    setLoading(true)
   fetch(`${BackendKey}/KickIt/home`)
   .then((response)=>response.json())
   .then(data=>{
@@ -96,7 +100,13 @@ useEffect(()=>{
   setEvents(Events)
   
   })
-
+}
+catch(error){
+  console.log(error)
+}
+finally{
+  setLoading(false)
+}
   // If you wrote import React, { useEffect } from "react"; but didn’t import useState, then calling React.useState works, but calling 
   // just useState without importing will throw.
 
@@ -114,7 +124,9 @@ useEffect(()=>{
         </h2>
 
         {/* Events Grid */}
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {loading && <Spinner />}
+
+         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {events.map((event) => {
            
             
