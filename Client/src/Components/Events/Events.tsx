@@ -70,51 +70,35 @@ setUserId(id)
 console.log(userId)
 console.log(socket2)
 },[])
+useEffect(() => {
+  const fetchEvents = async () => {
+    try {
+      setLoading(true); // spinner shows here
+      const response = await fetch(`${BackendKey}/KickIt/home`);
+      if (!response.ok) throw new Error("Failed to fetch events");
+      const data = await response.json();
 
-useEffect(()=>{
-  try{
-    setLoading(true)
-  fetch(`${BackendKey}/KickIt/home`)
-  .then((response)=>response.json())
-  .then(data=>{
-   
-    let Events: Event[] = [];
-    data.data.slice(0,3).forEach((e:any)=>{
-     if(e.activity==='Soccer'){
-      console.log('soccer')
-      console.log(e)
-     }
-      Events.push({
-  id:e._id,
-  title:e.eventName,
-  date:e.date,
-  location:e.venue,
-  description:e.Description,
-  image:e.image?e.image:"/src/assets/Soccer.png",
-  activity:e.activity
-  
-})
+      const Events: Event[] = data.data.slice(0, 3).map((e: any) => ({
+        id: e._id,
+        title: e.eventName,
+        date: e.date,
+        location: e.venue,
+        description: e.Description,
+        image: e.image || Soccer,
+        activity: e.activity,
+      }));
+
+      setEvents(Events);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false); // spinner disappears only after fetch is done
     }
+  };
 
-  )
-  setEvents(Events)
-  
-  })
-}
-catch(error){
-  console.log(error)
-}
-finally{
-  setLoading(false)
-}
-  // If you wrote import React, { useEffect } from "react"; but didn’t import useState, then calling React.useState works, but calling 
-  // just useState without importing will throw.
+  fetchEvents();
+}, []);
 
-// If you later added import { useState } from "react";, then switched to useState, it started working (not because of the hook itself,
-//  but because your file imports became consistent).
-
-
-},[])
   return (
     <section id="events" className="bg-gray-50 py-20">
       <div className="max-w-7xl mx-auto px-6">
