@@ -1,5 +1,4 @@
 import Price from './Components/Price/Price'
-import Comments from './Components/Comments/Comments'
 import Events from './Components/Events/Events'
 import About from './Components/About/About'
 import './App.css'
