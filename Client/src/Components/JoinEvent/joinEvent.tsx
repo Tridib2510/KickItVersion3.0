@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { useAuthStore } from "../../store/Auth";
 import EventDetailsRegister from "../EventDetailsRegister/EventDetailsRegister"
 import { io,Socket} from "socket.io-client"
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import Soccer from "../../assets/Soccer.png"
 import Cricket from "../../assets/Cricket.png"
 import Badminton from "../../assets/Badminton.png"
