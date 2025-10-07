@@ -27,6 +27,7 @@ io.on('connection',async socket=>{
         console.log('userId'+userId)
         const user=await userModel.findById(userId)
          console.log('The user is') 
+         console.log('hello')
          io.to(creatorId).emit('send', user,event);
     })
 

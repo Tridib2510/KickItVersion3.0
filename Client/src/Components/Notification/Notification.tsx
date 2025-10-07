@@ -41,6 +41,8 @@ const BackendKey = import.meta.env.VITE_BACKEND_KEY
 
 const NotificationDropdown: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const hasFetched = useRef(false);
+
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [socket, setSocket] = useState<Socket | null>(null)
   const [checkNotification, setCheckNotification] = useState(false)
@@ -53,9 +55,9 @@ const NotificationDropdown: React.FC = () => {
     const Socket = io(BackendKey)
     setSocket(Socket)
    console.log(socket)
-    Socket.emit("joinRoom", id)
 console.log(checkNotification)
-    socket?.on("send", (user, event) => {
+    Socket?.on("send", (user, event) => {
+       console.log('senddddddddddddddddddddd')
       setCheckNotification((prev) => !prev)
       setNotifications((prev) => [
         ...prev,
@@ -91,6 +93,10 @@ console.log(checkNotification)
 
   // fetch persisted join requests
   useEffect(() => {
+
+     if (hasFetched.current) return;
+  hasFetched.current = true;
+
     const options: Options = {
       method: "GET",
       credentials: "include",

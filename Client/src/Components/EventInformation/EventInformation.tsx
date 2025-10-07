@@ -1,10 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-
 import { motion } from "framer-motion";
 import ReviewPopup from "../Review/Review";
-const BackendKey=import.meta.env.VITE_BACKEND_KEY
 
+import Soccer from "../../assets/Soccer.png";
+import Cricket from "../../assets/Cricket.png";
+import Badminton from "../../assets/Badminton.png";
+import Tennis from "../../assets/Tennis.png";
+import Basketball from "../../assets/Basketball.png";
+
+const BackendKey = import.meta.env.VITE_BACKEND_KEY;
 
 interface Profile {
   id?: string;
@@ -19,105 +24,56 @@ interface EventDetailsData {
   date?: string;
   time?: string;
   location?: string;
+  activity?: string;
   description?: string;
   participants?: Profile[];
 }
 
 const EventPage: React.FC = () => {
-const { eventId } = useParams<{ eventId: string }>();
- const [open, setOpen] = useState(false);
-const [event,setEvent]=useState<EventDetailsData|undefined>()
-const [reviewer,setReviewer]=useState("");
-function openReview(userId:string|undefined){
-  console.log("set Review")
-  setOpen(true)
-  if(userId)setReviewer(userId)
-}
+  const { eventId } = useParams<{ eventId: string }>();
+  const [open, setOpen] = useState(false);
+  const [event, setEvent] = useState<EventDetailsData | undefined>();
+  const [reviewer, setReviewer] = useState("");
 
-    // let event: EventDetailsData = {
-    // id: "1",
-    // title: "React Conference 2025",
-    // date: "October 28, 2025",
-    // time: "10:00 AM - 5:00 PM",
-    // location: "Silicon Valley Conference Center",
-    // description:
-    //   "Join us for a full day of talks, workshops, and networking focused on React and modern frontend development. Learn about the latest trends, meet industry leaders, and expand your skillset.",
-    // participants: [
-    //   {
-    //     id: "p1",
-    //     name: "Alice Johnson",
-    //     avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-    //     role: "Speaker",
-    //   },
-    //   {
-    //     id: "p2",
-    //     name: "Bob Smith",
-    //     avatar: "https://randomuser.me/api/portraits/men/22.jpg",
-    //     role: "Attendee",
-    //   },
-    //   {
-    //     id: "p3",
-    //     name: "Carol Lee",
-    //     avatar: "https://randomuser.me/api/portraits/women/65.jpg",
-    //     role: "Organizer",
-    //   },
-    //   {
-    //     id: "p4",
-    //     name: "David Kim",
-    //     avatar: "https://randomuser.me/api/portraits/men/33.jpg",
-    //   },
-    //   {
-    //     id: "p5",
-    //     name: "Emma Watson",
-    //     avatar: "https://randomuser.me/api/portraits/women/12.jpg",
-    //   },
-    // ],
-//   };
+  function openReview(userId: string | undefined) {
+    setOpen(true);
+    if (userId) setReviewer(userId);
+  }
 
-  useEffect(()=>{
-   fetch(`${BackendKey}/KickIt/getEvent/${eventId}`,{
-    credentials:"include"
-   })
-   .then(res=>res.json())
-   .then(data=>{
-    console.log('current-->')
-    const participants:Profile[]=data.event.playersJoined.map(({username,image,id}:any)=>({
-        id:id,
-        name:username,
-        avatar:image
-    }))
-    
-     const ev={
-           id:data._id,
-           title:data.eventName,
-           date:data.date,
-           time:data.time,
-           location:data.venue,
-           description:data.Description
-     }
-     console.log('ev')
-  console.log(ev)
-    setEvent({
-           id:data.event._id,
-           title:data.event.eventName,
-           date:data.event.date,
-           time:data.event.time,
-           location:data.event.venue,
-           description:data.event.Description,
-           participants:participants
-      })
+  useEffect(() => {
+    fetch(`${BackendKey}/KickIt/getEvent/${eventId}`, {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('current===')
+        console.log(data)
+        const participants: Profile[] = data.event.playersJoined.map(
+          ({ username, image, id }: any) => ({
+            id,
+            name: username,
+            avatar: image,
+          })
+        );
 
-    
-   })
-   
-   
-},[])
+        setEvent({
+          id: data.event._id,
+          title: data.event.eventName,
+          date: data.event.date,
+          time: data.event.time,
+          location: data.event.venue,
+          description: data.event.Description,
+          activity: data.event.activity,
+          participants,
+        });
+      });
+  }, [eventId]);
 
   const sliderRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: "left" | "right") => {
     if (sliderRef.current) {
-      const scrollAmount = direction === "left" ? -250 : 250;
+      const scrollAmount = direction === "left" ? -300 : 300;
       sliderRef.current.scrollBy({
         left: scrollAmount,
         behavior: "smooth",
@@ -126,64 +82,118 @@ function openReview(userId:string|undefined){
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6 mt-10 space-y-10">
-      {/* Event Header */}
-      <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-3xl p-8 shadow-lg">
-        <h1 className="text-4xl font-bold mb-3">{event?.title}</h1>
-        <p className="text-lg">{event?.date} | {event?.time}</p>
-        <p className="text-lg">{event?.location}</p>
-        <p className="mt-4 text-gray-100 text-base">{event?.description}</p>
+    <div className="max-w-7xl mx-auto p-6 sm:p-8 md:p-10 mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+      {/* Left Column - Image + Description */}
+      <div className="col-span-1 bg-white rounded-2xl md:rounded-3xl shadow-xl p-5 sm:p-8 flex flex-col items-center">
+        <img
+          src={
+            event?.activity === "Soccer"
+              ? Soccer
+              : event?.activity === "Cricket"
+              ? Cricket
+              : event?.activity === "Badminton"
+              ? Badminton
+              : event?.activity === "Tennis"
+              ? Tennis
+              : Basketball
+          }
+          alt={event?.title}
+          className="w-full h-56 sm:h-72 md:h-80 object-cover rounded-xl md:rounded-2xl mb-4 sm:mb-6 shadow-md"
+        />
+        <p className="text-gray-700 text-base sm:text-lg md:text-xl leading-relaxed text-center">
+          {event?.description}
+        </p>
       </div>
 
-      {/* Participants Slider */}
-      <div>
-        <h2 className="text-2xl font-semibold mb-4">Participants</h2>
-        <div className="relative">
-          {/* Left Button */}
-          <button
-            onClick={() => scroll("left")}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow-md rounded-full p-2 hover:bg-gray-100 transition"
-          >
-            ◀
-          </button>
+      {/* Right Column */}
+      <div className="col-span-2 flex flex-col gap-8 md:gap-10">
+        {/* Event Info */}
+        <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white rounded-2xl md:rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl text-center md:text-left">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3 md:mb-4 tracking-wide">
+            {event?.title}
+          </h1>
 
-          {/* Slider */}
-          <div
-            ref={sliderRef}
-            className="flex overflow-x-auto gap-6 py-4 scrollbar-hide scroll-smooth"
-          >
-            {event?.participants && event.participants.map((profile) => (
-              <motion.div
-                key={profile.id}
-                onClick={()=>openReview(profile.id)}
-                className="min-w-[200px] bg-white rounded-2xl shadow-lg p-4 flex-shrink-0 cursor-pointer hover:scale-105 transition-transform duration-300"
-                whileHover={{ scale: 1.08 }}
-              >
-                <img
-                  src={profile.avatar}
-                  alt={profile.name}
-                  className="w-20 h-20 rounded-full object-cover mx-auto mb-3"
-                />
-                <div className="text-center">
-                  <p className="font-semibold">{profile.name}</p>
-                  {profile.role && (
-                    <p className="text-sm text-gray-500">{profile.role}</p>
-                  )}
-                </div>
-              </motion.div>
-            ))}
+          {/* Activity Section */}
+          {event?.activity && (
+            <div className="flex justify-center md:justify-start mb-5">
+              <span className="inline-block px-5 py-2 text-lg sm:text-xl md:text-2xl font-semibold bg-white/20 backdrop-blur-md rounded-full border border-white/30 shadow-md">
+                🏅 {event.activity}
+              </span>
+            </div>
+          )}
+
+          <p className="text-lg sm:text-xl md:text-2xl mb-1 md:mb-2 font-medium">
+            📅 {event?.date} | 🕒 {event?.time}
+          </p>
+          <p className="text-lg sm:text-xl md:text-2xl font-medium">
+            📍 {event?.location}
+          </p>
+        </div>
+
+        {/* Participants Slider */}
+        <div>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-gray-800 text-center md:text-left">
+            Participants
+          </h2>
+          <div className="relative">
+            {/* Left Button */}
+            <button
+              onClick={() => scroll("left")}
+              className="hidden sm:flex absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-4 hover:bg-gray-100 text-xl sm:text-2xl transition"
+            >
+              ◀
+            </button>
+
+            {/* Slider */}
+            <div
+              ref={sliderRef}
+              className="flex overflow-x-auto gap-5 sm:gap-8 py-4 sm:py-6 scrollbar-hide scroll-smooth px-2"
+            >
+              {event?.participants && event.participants.length > 0 ? (
+                event.participants.map((profile) => (
+                  <motion.div
+                    key={profile.id}
+                    onClick={() => openReview(profile.id)}
+                    className="min-w-[160px] sm:min-w-[200px] md:min-w-[220px] bg-white rounded-2xl md:rounded-3xl shadow-lg p-4 sm:p-6 flex-shrink-0 cursor-pointer hover:scale-105 transition-transform duration-300 text-center"
+                    whileHover={{ scale: 1.08 }}
+                  >
+                    <img
+                      src={profile.avatar}
+                      alt={profile.name}
+                      className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full object-cover mx-auto mb-3 sm:mb-4 border-4 border-indigo-500"
+                    />
+                    <div>
+                      <p className="font-semibold text-lg sm:text-xl text-gray-900">
+                        {profile.name}
+                      </p>
+                      {profile.role && (
+                        <p className="text-sm sm:text-base text-gray-500">
+                          {profile.role}
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
+                ))
+              ) : (
+                <p className="text-gray-500 text-lg text-center w-full">
+                  No participants yet for this event.
+                </p>
+              )}
+            </div>
+
+            {/* Right Button */}
+            <button
+              onClick={() => scroll("right")}
+              className="hidden sm:flex absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-4 hover:bg-gray-100 text-xl sm:text-2xl transition"
+            >
+              ▶
+            </button>
           </div>
-
-          {/* Right Button */}
-          <button
-            onClick={() => scroll("right")}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow-md rounded-full p-2 hover:bg-gray-100 transition"
-          >
-            ▶
-          </button>
         </div>
       </div>
-      <ReviewPopup open={open} setOpen={setOpen} reviewer={reviewer}/>
+
+      {/* Review Popup */}
+      <ReviewPopup open={open} setOpen={setOpen} reviewer={reviewer} />
     </div>
   );
 };

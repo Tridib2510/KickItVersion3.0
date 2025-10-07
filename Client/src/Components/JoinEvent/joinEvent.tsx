@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { useAuthStore } from "../../store/Auth";
 import EventDetailsRegister from "../EventDetailsRegister/EventDetailsRegister"
 import { io,Socket} from "socket.io-client"
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Soccer from "../../assets/Soccer.png"
 import Cricket from "../../assets/Cricket.png"
 import Badminton from "../../assets/Badminton.png"
@@ -187,13 +187,14 @@ console.log(socket)
 
                 {/* Action Button */}
                 {userId && event.playersJoined.includes(userId) ? (
+                  <Link to={`./${event.id}`}>
                   <Button
                     size="sm"
-                    disabled
-                    className="w-full rounded-full bg-green-500/20 text-green-700 font-semibold cursor-not-allowed"
+                    className="w-full rounded-full bg-green-500/20 text-green-700 font-semibold "
                   >
                     ✅ Already Joined
                   </Button>
+                  </Link>
                 ) :(userId && event.joiningRequest.includes(userId))? <Button
     size="sm"
     disabled
