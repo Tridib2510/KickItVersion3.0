@@ -4,6 +4,21 @@ const validator=require('validator')
 const bcrypt=require('bcryptjs')
 const crypto=require('crypto')
 const badgemodel=require('./badgesmodels')
+
+const userEventPairSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "users",
+    required: true,
+  },
+  eventId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Events",
+    required: true,
+  },
+});
+
+
 const Schema=new mongoose.Schema({
     username:{
         type:String,
@@ -92,7 +107,12 @@ const Schema=new mongoose.Schema({
     eventsCreated:{
       type:Number,
       default:0
-    }
+    },
+    requests: {
+    type: [userEventPairSchema],
+    default: [],
+    unique:true
+  },
 
   
 },

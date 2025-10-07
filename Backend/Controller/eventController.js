@@ -394,8 +394,15 @@ exports.joinRequest=catchAsync(async(req,res,next)=>{
     console.log(creator)
    
     creator.joinedRequests.push(decode.id)
+
+    const userId=decode.id
      
-   
+   await userModel.findByIdAndUpdate(
+    creator._id,
+  { $push: { requests: { userId, eventId } } },
+  { new: true, runValidators: true }
+);
+
     console.log('Test Case 0')
 
    creator.requestedEvents.push(req.body.eventId)
@@ -471,6 +478,8 @@ const user=await userModel.findById(decode.id).populate({
 }).populate({
    path:'requestedEvents'
 })
+.populate("requests.userId")   // populate the user
+.populate("requests.eventId"); // populate the event
 
  return res.status(200).json({
    user

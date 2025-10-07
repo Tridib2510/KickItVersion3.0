@@ -105,28 +105,29 @@ const NotificationDropdown: React.FC = () => {
    console.log('data.user')
           console.log(data.user.joinedRequests[0])
         const notis: Notification[] = []
-        for (let i=0;i<data.user.joinedRequests.length;i++) {
-       
+        for (let i=0;i<data.user.requests.length;i++) {
+         console.log('notifications')
+         console.log(data.user)
           notis.push({
-            id: data.user.joinedRequests[i]._id,
-            message: `${data.user.joinedRequests[i].username} would like to join your event`,
+            id: data.user.requests[i].userId._id,
+            message: `${data.user.requests[i].userId.username} would like to join your event`,
             time: "1hr ago",
-            image: data.user.joinedRequests[i].image,
-            eventId: data.user.joinedRequests[i].eventId,
+            image: data.user.requests[i].userId.image,
+            eventId: data.user.requests[i].eventId._id,
             event: {
-              id: data.user.requestedEvents[i]._id,
-              title: data.user.requestedEvents[i].eventName,
-              date: data.user.requestedEvents[i].date,
-              time: data.user.requestedEvents[i].time,
-              location: data.user.requestedEvents[i].venue,
-              description: data.user.requestedEvents[i].Description,
+              id: data.user.requests[i].eventId._id,
+              title: data.user.requests[i].eventId.eventName,
+              date: data.user.requests[i].eventId.date,
+              time: data.user.requests[i].eventId.time,
+              location: data.user.requests[i].eventId.venue,
+              description: data.user.requests[i].eventId.Description,
               image: 'https://cdn-icons-png.flaticon.com/512/847/847969.png',
             },
             user: {
-              id: data.user.joinedRequests[i]._id,
-              username: data.user.joinedRequests[i].username,
-              image: data.user.joinedRequests[i].image,
-              bio: data.user.joinedRequests[i].Description,
+              id: data.user.requests[i].userId._id,
+              username: data.user.requests[i].userId.username,
+              image: data.user.requests[i].userId.image,
+              bio: data.user.requests[i].userId.Description,
             },
           })
         }
@@ -134,7 +135,7 @@ const NotificationDropdown: React.FC = () => {
         console.log('notis')
         console.log(data)
       })
-  }, [checkNotification])
+  }, [])
 
   // close dropdown when clicking outside
   useEffect(() => {

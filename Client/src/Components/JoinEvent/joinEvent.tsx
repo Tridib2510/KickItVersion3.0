@@ -160,7 +160,7 @@ console.log(socket)
               key={event.id}
               className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 flex flex-col"
             >
-              <Link to={`./${event.id}`}>
+              {/* <Link to={`./${event.id}`}> */}
               <img
                 src={event.activity==='Soccer'?Soccer:event.activity==='Cricket'?Cricket:event.activity==='Badminton'?Badminton:event.activity==='Tennis'?Tennis:Basketball}
                 alt={event.title}
@@ -227,7 +227,7 @@ console.log(socket)
                   </Button>
                 )}
               </div>
-                </Link>
+                {/* </Link> */}
             </div>
             
           ))}
