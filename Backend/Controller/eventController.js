@@ -433,13 +433,15 @@ exports.getJoinedEvents=catchAsync(async(req,res,next)=>{
         const user=await userModel.findById(decode.id)
         console.log('username2')
         console.log(user.username)
-        const event=new ApiFeature(eventModel,req.query,req.query).filter().paginate()
+        const event=await eventModel.find({"playersJoined":decode.id}).populate({
+         path:"createdBy"
+        })
         const data=await event.query 
 
        console.log('Test case getJoinedEvents passed')
       //   event=await data.populate('createdBy')
         return res.status(200).json({
-        Event:data,
+        Event:event,
         user:user.username
     })
 })
