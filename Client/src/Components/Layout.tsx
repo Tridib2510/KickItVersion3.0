@@ -3,10 +3,8 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
 import ChatPopup from "./Chat/Chat";
-import { MessageCircle } from "lucide-react";
 
 const Layout = () => {
-  const [chatOpen, setChatOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
 useEffect(() => {

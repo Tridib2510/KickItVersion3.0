@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X, MessageCircle, Bell } from "lucide-react"; // Added icons
+import { Menu, X, MessageCircle } from "lucide-react"; // Added icons
 import { useAuthStore } from "../../store/Auth";
 import clsx from "clsx";
 import LoginPopup from "../Login/Login";
