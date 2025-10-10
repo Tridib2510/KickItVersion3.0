@@ -1,8 +1,9 @@
 // App.tsx or Home.tsx
-import React from "react";
+import React, { useEffect } from "react";
 import EventsSection from "../JoinEvent/joinEvent"; // adjust path as needed
 
 const App: React.FC = () => {
+  
   return (
     <div>
       {/* Other sections like Navbar, Hero, etc. */}

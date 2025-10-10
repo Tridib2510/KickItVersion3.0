@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
@@ -7,6 +7,16 @@ import { MessageCircle } from "lucide-react";
 
 const Layout = () => {
   const [chatOpen, setChatOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); // Tailwind md breakpoint
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <>
@@ -14,18 +24,10 @@ const Layout = () => {
       <Outlet />
 
       {/* Floating Chat Button */}
-      {!chatOpen && (
-        <button
-          onClick={() => setChatOpen(true)}
-          className="fixed bottom-6 right-6 p-4 rounded-full bg-indigo-500 text-white shadow-lg hover:bg-indigo-600 transition"
-          aria-label="Open chat"
-        >
-          <MessageCircle size={24} />
-        </button>
-      )}
+     
 
       {/* Chat Popup */}
-      <ChatPopup/>
+      {!isMobile && <ChatPopup />}
 
       <Footer />
     </>

@@ -71,6 +71,8 @@ router.route('/joinRequestToCreator').patch(eventController.joinRequest)
 
 router.route('/alreadyExits').patch(eventController.alreadyJoined)
 
+router.route("/isLoggedIn").get(authController.isLoggedIn)
+
 router.route('/joinedEvents').get(eventController.getJoinedEvents)
 
 router.route('/myEvents').get(authController.protect,eventController.myEvents)

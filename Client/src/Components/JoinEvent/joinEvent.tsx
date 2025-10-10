@@ -204,6 +204,7 @@ console.log(socket)
   </Button>: (
                   <Button
                     onClick={()=>{
+                  
                       setSelectedEvent({
                     id:event.id,
                     title: event.title,

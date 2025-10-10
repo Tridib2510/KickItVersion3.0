@@ -83,7 +83,7 @@ export function CreateEventPopup() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <a href="#" className="hover:text-indigo-400 transition-colors">Create Event</a>
+        <a href="#" className="hover:text-indigo-400 transition-colors text-lg font-medium">Create Event</a>
       </DialogTrigger>
 
       <DialogContent className="max-w-lg rounded-2xl p-6">

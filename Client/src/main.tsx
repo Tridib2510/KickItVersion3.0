@@ -8,6 +8,7 @@ import Layout from './Components/Layout.tsx'
 import MobileNotification from './Components/MobileNotification/MobileNotification.tsx'
 import AllEvents from './Components/AllEvents/AllEvents.tsx'
 import EventPage from './Components/EventInformation/EventInformation.tsx'
+import ChatPage from './Components/ChatMobile/ChatMobile.tsx'
 import { createBrowserRouter,createRoutesFromElements,Route,RouterProvider } from 'react-router-dom'
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -17,6 +18,7 @@ const router = createBrowserRouter(
     <Route path='events' element={<AllEvents/>} />
     <Route path='events/:eventId' element={<EventPage/>}/>
    <Route path='notification' element={<MobileNotification/>}/>
+   <Route path='chat' element={<ChatPage/>}/>
     </Route>
     
       )

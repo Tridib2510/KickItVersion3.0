@@ -1,14 +1,49 @@
 "use client";
 import { motion, useAnimation, useInView } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import LoginPopup from "../Login/Login";
 import Player from "../../assets/Player.png";
+import { useAuthStore } from "../../store/Auth";
+
 
 export default function Hero() {
+
+const token = useAuthStore((state) => state.token);
+const [isLoggedIn, setIsLoggedIn] = useState(false);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.4 });
   const controls = useAnimation();
+const BackendKey = import.meta.env.VITE_BACKEND_KEY;
+
+ interface Options {
+    method: string;
+    credentials: RequestCredentials;
+    headers: {
+      "Content-Type": string;
+    };
+  }
+
+  const options: Options = {
+    method: "GET",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+  };
+
+
+  useEffect(() => {
+    console.log('TOKEEEEN')
+    console.log(token)
+    if (token) {
+      fetch(`${BackendKey}/KickIt/getUser`, options)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          setIsLoggedIn(true);
+        });
+    }
+  }, [token]);
+
 
   useEffect(() => {
     if (isInView) {
@@ -43,7 +78,7 @@ export default function Hero() {
             ever before.
           </p>
           <div className="flex gap-4">
-            <LoginPopup Text={"Get Started"} />
+            {!isLoggedIn && <LoginPopup Text={"Get Started"} />}
             <Button
               size="lg"
               variant="outline"

@@ -94,6 +94,28 @@ exports.protect=catchAsync(async(req,res,next)=>{
  
 })
 
+exports.isLoggedIn=catchAsync(async(req,res,next)=>{
+   let token=undefined
+   
+    req.headers.authorization=`Bearer ${req.cookies.token}`
+
+ if(req.headers.authorization &&req.headers.authorization.startsWith('Bearer')){
+    token=req.headers.authorization.split(' ')[1]
+  
+ }
+ 
+ if(token==='undefined'){
+    return next(new AppError('You are not logged in',401))
+ }
+
+ return res.status(200).json({
+    status:"success",
+    token:token,
+    message:"You are logged in"
+
+ })
+})
+
 exports.logOut=catchAsync(async (req,res,next)=>{
     // res.cookie('cookieName', '', {
     //     httpOnly: true, // Ensure the cookie is not accessible via JavaScript
