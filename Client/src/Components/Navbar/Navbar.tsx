@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
       {/* Navbar Container */}
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
-        <div className="text-2xl font-bold text-indigo-400">MyBrand</div>
+        <div className="text-2xl font-bold text-indigo-400"> KickIT</div>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
