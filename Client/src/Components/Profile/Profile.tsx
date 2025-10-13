@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { ThreeDCardDemo } from "../Cards/Cards";
 import UpdateProfileModal from "../updateProfile/updateProfile";
-import { ChartBarLabel} from "../Charts/BarChar";
+import { ChartBarLabel } from "../Charts/BarChar";
 import EventDetailsModal from "../EventDetails/EventDetails";
-import {BadgeSlider} from "../Badges/Badges";
-import Calendar from "../Calender/Calender"; //  import only the compound calendar
-const BackendKey=import.meta.env.VITE_BACKEND_KEY
+import { BadgeSlider } from "../Badges/Badges";
+import Calendar from "../Calender/Calender";
+import Soccer from "../../assets/Soccer.png";
+import Cricket from "../../assets/Cricket.png";
+import Badminton from "../../assets/Badminton.png";
+import Tennis from "../../assets/Tennis.png";
+import Basketball from "../../assets/Basketball.png";
+
+const BackendKey = import.meta.env.VITE_BACKEND_KEY;
 
 const UserProfile: React.FC = () => {
   type Event = {
@@ -14,6 +20,7 @@ const UserProfile: React.FC = () => {
     date: string;
     time: string;
     location: string;
+    activity?: string;
     description: string;
     image?: string;
   };
@@ -29,21 +36,33 @@ const UserProfile: React.FC = () => {
     image: string;
   }
 
- interface Badge{
-  id?:string,
-  badgeName?:string,
-  description?:string,
-  previewShown?:Boolean,
-  image?:string
-}
-  const [badges,setBadges]=useState<Badge[]>([])
+  interface Badge {
+    id?: string;
+    badgeName?: string;
+    description?: string;
+    previewShown?: Boolean;
+    image?: string;
+  }
+
+  const [badges, setBadges] = useState<Badge[]>([]);
   const [myEvents, setMyEvents] = useState<Event[]>([]);
   const [user, setUser] = useState<User>();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // EventDetailsModal states
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [isEventOpen, setIsEventOpen] = useState(false);
+
+  // ✅ Logout function
+  const handleLogout = async () => {
+    try {
+      await fetch(`${BackendKey}/KickIt/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+      window.location.href = "/"; // Redirect to login or homepage
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
+  };
 
   useEffect(() => {
     fetch(`${BackendKey}/KickIt/profile`, {
@@ -51,7 +70,6 @@ const UserProfile: React.FC = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.user.badges)
         setUser({
           id: data.user._id,
           username: data.user.username,
@@ -62,17 +80,15 @@ const UserProfile: React.FC = () => {
           totalEvents: data.user.totalEvents,
           image: data.user.image,
         });
-        console.log(data.user.badges)
-        const Badges:Badge[]=data.user.badges.map((e:any)=>({
-            id:e._id,
-            badgeName:e.badgeName,
-            description:e.description,
-            issuedOn:e.issuedOn,
-            previewShown:e.previewShown,
-            image:e.image
-        }))
-        console.log(Badges)
-        setBadges(Badges)
+        const Badges: Badge[] = data.user.badges.map((e: any) => ({
+          id: e._id,
+          badgeName: e.badgeName,
+          description: e.description,
+          issuedOn: e.issuedOn,
+          previewShown: e.previewShown,
+          image: e.image,
+        }));
+        setBadges(Badges);
       });
   }, []);
 
@@ -82,19 +98,17 @@ const UserProfile: React.FC = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
         const Events: Event[] = data.data.map((e: any) => ({
           id: e._id,
           title: e.eventName,
           date: e.date,
           location: e.venue,
           description: e.Description,
+          activity: e.activity,
           image:
             "https://images.unsplash.com/photo-1551836022-4c4c79ecde51?w=800&q=80",
         }));
         setMyEvents(Events);
-
-        
       });
   }, []);
 
@@ -111,20 +125,28 @@ const UserProfile: React.FC = () => {
             <p className="text-gray-100 text-sm sm:text-base">{user?.email}</p>
           </div>
 
-          {/* Update Button (desktop only) */}
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="hidden sm:block bg-white text-blue-600 px-4 py-2 rounded-xl font-semibold shadow hover:bg-gray-100 transition"
-          >
-            Update Profile
-          </button>
+          {/* Desktop Buttons */}
+          <div className="hidden sm:flex gap-3">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-white text-blue-600 px-4 py-2 rounded-xl font-semibold shadow hover:bg-gray-100 transition"
+            >
+              Update Profile
+            </button>
+            <button
+              onClick={handleLogout}
+              className="bg-white text-blue-600 px-4 py-2 rounded-xl font-semibold shadow hover:bg-gray-100 transition"
+            >
+              Logout
+            </button>
+          </div>
         </div>
 
         {/* Profile Image + Description */}
         <div
           className="
             absolute 
-            bottom-[-140px] sm:bottom-[-100px]   /* ✅ lift up slightly on desktop */
+            bottom-[-140px] sm:bottom-[-100px]
             left-1/2 sm:left-8 
             transform -translate-x-1/2 sm:translate-x-0 
             flex flex-col items-center sm:items-start
@@ -139,13 +161,21 @@ const UserProfile: React.FC = () => {
             {user?.description || "No description provided"}
           </p>
 
-          {/* Mobile-only Update Profile button */}
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="sm:hidden mt-4 bg-blue-600 text-white px-4 py-2 rounded-xl font-semibold shadow hover:bg-blue-700 transition"
-          >
-            Update Profile
-          </button>
+          {/* Mobile Buttons */}
+          <div className="sm:hidden mt-4 flex flex-col items-center gap-2">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-blue-600 text-white px-4 py-2 rounded-xl font-semibold shadow hover:bg-blue-700 transition w-40"
+            >
+              Update Profile
+            </button>
+            <button
+              onClick={handleLogout}
+              className="bg-blue-600 text-white px-4 py-2 rounded-xl font-semibold shadow hover:bg-blue-700 transition w-40"
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </div>
 
@@ -173,21 +203,15 @@ const UserProfile: React.FC = () => {
           </div>
         </div>
 
-        {/* Chart */}
-    <div className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-  {/* Left column */}
-  <div>
-    <ChartBarLabel/>
-  </div>
-
-  {/* Right column */}
-  <div>
-    {/* Replace with your actual content */}
-     <BadgeSlider badges={badges}/> 
-  </div>
-</div>
-
-
+        {/* Chart + Badges */}
+        <div className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <ChartBarLabel />
+          </div>
+          <div>
+            <BadgeSlider badges={badges} />
+          </div>
+        </div>
 
         {/* Events */}
         <h2 className="text-2xl font-bold mb-4">Your Events</h2>
@@ -201,7 +225,17 @@ const UserProfile: React.FC = () => {
                 date={event.date}
                 location={event.location}
                 description={event.description}
-                image={event.image}
+                image={
+                  event.activity === "Soccer"
+                    ? Soccer
+                    : event.activity === "Cricket"
+                    ? Cricket
+                    : event.activity === "Badminton"
+                    ? Badminton
+                    : event.activity === "Tennis"
+                    ? Tennis
+                    : Basketball
+                }
                 setSelectedEvent={setSelectedEvent}
                 setIsEventOpen={setIsEventOpen}
               />
@@ -210,7 +244,7 @@ const UserProfile: React.FC = () => {
         </div>
       </div>
 
-      {/* ✅ Integrated Floating Calendar (self-contained) */}
+      {/* Floating Calendar */}
       <Calendar
         setSelectedEvent={setSelectedEvent}
         setIsEventOpen={setIsEventOpen}
