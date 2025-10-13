@@ -22,12 +22,9 @@ export function ThreeDCardDemo({
   id,
   title,
   description,
-  time,
   date,
   location,
   image,
-  setSelectedEvent,
-  setIsEventOpen,
 }: ThreeDCardDemoProps) {
   return (
     <CardContainer className="inter-var">
