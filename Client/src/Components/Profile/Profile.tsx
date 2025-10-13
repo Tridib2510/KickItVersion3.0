@@ -55,7 +55,6 @@ const UserProfile: React.FC = () => {
   const handleLogout = async () => {
     try {
       await fetch(`${BackendKey}/KickIt/logout`, {
-        method: "POST",
         credentials: "include",
       });
       window.location.href = "/"; // Redirect to login or homepage
