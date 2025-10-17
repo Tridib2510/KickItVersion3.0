@@ -82,8 +82,9 @@ const EventPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-10 md:py-14">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 items-start">
-        {/* Left Column - Image + Description */}
-        <div className="col-span-1 bg-white rounded-2xl md:rounded-3xl shadow-xl p-5 sm:p-8 flex flex-col items-center text-center w-full">
+        
+        {/* Left Column - Image + Description (Hidden on small screens) */}
+        <div className="hidden md:flex col-span-1 bg-white rounded-2xl md:rounded-3xl shadow-xl p-5 sm:p-8 flex-col items-center text-center w-full">
           <img
             src={
               event?.activity === "Soccer"
@@ -97,7 +98,7 @@ const EventPage: React.FC = () => {
                 : Basketball
             }
             alt={event?.title}
-            className="w-full h-52 sm:h-64 md:h-80 object-cover rounded-xl mb-4 sm:mb-6 shadow-md"
+            className="w-full h-56 sm:h-72 md:h-80 object-cover rounded-xl mb-4 sm:mb-6 shadow-md"
           />
           <p className="text-gray-700 text-base sm:text-lg md:text-xl leading-relaxed">
             {event?.description}
