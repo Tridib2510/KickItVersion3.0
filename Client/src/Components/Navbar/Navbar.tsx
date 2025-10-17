@@ -6,7 +6,7 @@ import LoginPopup from "../Login/Login";
 import { Link } from "react-router-dom";
 import { CreateEventPopup } from "../CreateEvent/CreateEvent";
 import NotificationDropdown from "../Notification/Notification";
-
+import { Bell } from "lucide-react";
 const BackendKey = import.meta.env.VITE_BACKEND_KEY;
 
 const Navbar: React.FC = () => {
@@ -141,14 +141,8 @@ const Navbar: React.FC = () => {
           </div>
           {isLoggedIn ? (
             <div className="flex items-center space-x-6 ml-6">
-              <NotificationDropdown />
-              <Link to="/profile" className="focus:outline-none text-gray-200 hover:text-white">
-                <img
-                  src={profile}
-                  alt="User Profile"
-                  className="w-9 h-9 rounded-full border-2 border-indigo-400 hover:scale-105 transition-transform"
-                />
-              </Link>
+              <Bell size={50} color="#555" />
+
             </div>
           ) : (
             <LoginPopup Text={"Login"} />
