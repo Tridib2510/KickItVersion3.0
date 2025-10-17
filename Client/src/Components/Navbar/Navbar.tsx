@@ -149,7 +149,7 @@ const Navbar: React.FC = () => {
 
             </div>
           ) : (
-            <LoginPopup Text={"Login"} />
+            <div></div>
           )}
 
           {/* Chat Icon */}
@@ -158,7 +158,7 @@ const Navbar: React.FC = () => {
             className="flex flex-col items-center gap-2 hover:text-indigo-400 transition-colors"
             onClick={toggleMenu}
           >
-            <MessageCircle size={50} className="text-indigo-400" />
+            <MessageCircle size={40} className="text-indigo-400" />
           </Link>
 
          
