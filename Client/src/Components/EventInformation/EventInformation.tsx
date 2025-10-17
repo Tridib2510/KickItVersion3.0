@@ -46,8 +46,6 @@ const EventPage: React.FC = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log('current===')
-        console.log(data)
         const participants: Profile[] = data.event.playersJoined.map(
           ({ username, image, id }: any) => ({
             id,
@@ -82,112 +80,114 @@ const EventPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6 sm:p-8 md:p-10 mt-10 md:mt-14 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
-      {/* Left Column - Image + Description */}
-      <div className="col-span-1 bg-white rounded-2xl md:rounded-3xl shadow-xl p-5 sm:p-8 flex flex-col items-center">
-        <img
-          src={
-            event?.activity === "Soccer"
-              ? Soccer
-              : event?.activity === "Cricket"
-              ? Cricket
-              : event?.activity === "Badminton"
-              ? Badminton
-              : event?.activity === "Tennis"
-              ? Tennis
-              : Basketball
-          }
-          alt={event?.title}
-          className="w-full h-56 sm:h-72 md:h-80 object-cover rounded-xl md:rounded-2xl mb-4 sm:mb-6 shadow-md"
-        />
-        <p className="text-gray-700 text-base sm:text-lg md:text-xl leading-relaxed text-center">
-          {event?.description}
-        </p>
-      </div>
-
-      {/* Right Column */}
-      <div className="col-span-2 flex flex-col gap-8 md:gap-10">
-        {/* Event Info */}
-        <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white rounded-2xl md:rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl text-center md:text-left">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3 md:mb-4 tracking-wide">
-            {event?.title}
-          </h1>
-
-          {/* Activity Section */}
-          {event?.activity && (
-            <div className="flex justify-center md:justify-start mb-5">
-              <span className="inline-block px-5 py-2 text-lg sm:text-xl md:text-2xl font-semibold bg-white/20 backdrop-blur-md rounded-full border border-white/30 shadow-md">
-                🏅 {event.activity}
-              </span>
-            </div>
-          )}
-
-          <p className="text-lg sm:text-xl md:text-2xl mb-1 md:mb-2 font-medium">
-            📅 {event?.date} | 🕒 {event?.time}
-          </p>
-          <p className="text-lg sm:text-xl md:text-2xl font-medium">
-            📍 {event?.location}
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-10 md:py-14">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 items-start">
+        {/* Left Column - Image + Description */}
+        <div className="col-span-1 bg-white rounded-2xl md:rounded-3xl shadow-xl p-5 sm:p-8 flex flex-col items-center text-center w-full">
+          <img
+            src={
+              event?.activity === "Soccer"
+                ? Soccer
+                : event?.activity === "Cricket"
+                ? Cricket
+                : event?.activity === "Badminton"
+                ? Badminton
+                : event?.activity === "Tennis"
+                ? Tennis
+                : Basketball
+            }
+            alt={event?.title}
+            className="w-full h-52 sm:h-64 md:h-80 object-cover rounded-xl mb-4 sm:mb-6 shadow-md"
+          />
+          <p className="text-gray-700 text-base sm:text-lg md:text-xl leading-relaxed">
+            {event?.description}
           </p>
         </div>
 
-        {/* Participants Slider */}
-        <div>
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-gray-800 text-center md:text-left">
-            Participants
-          </h2>
-          <div className="relative">
-            {/* Left Button */}
-            <button
-              onClick={() => scroll("left")}
-              className="hidden sm:flex absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-4 hover:bg-gray-100 text-xl sm:text-2xl transition"
-            >
-              ◀
-            </button>
+        {/* Right Column */}
+        <div className="col-span-2 flex flex-col gap-8 md:gap-10 w-full">
+          {/* Event Info */}
+          <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white rounded-2xl md:rounded-3xl p-6 sm:p-8 md:p-10 shadow-xl text-center md:text-left">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3 md:mb-4 tracking-wide">
+              {event?.title}
+            </h1>
 
-            {/* Slider */}
-            <div
-              ref={sliderRef}
-              className="flex overflow-x-auto gap-5 sm:gap-8 py-4 sm:py-6 scrollbar-hide scroll-smooth px-2"
-            >
-              {event?.participants && event.participants.length > 0 ? (
-                event.participants.map((profile) => (
-                  <motion.div
-                    key={profile.id}
-                    onClick={() => openReview(profile.id)}
-                    className="min-w-[160px] sm:min-w-[200px] md:min-w-[220px] bg-white rounded-2xl md:rounded-3xl shadow-lg p-4 sm:p-6 flex-shrink-0 cursor-pointer hover:scale-105 transition-transform duration-300 text-center"
-                    whileHover={{ scale: 1.08 }}
-                  >
-                    <img
-                      src={profile.avatar}
-                      alt={profile.name}
-                      className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full object-cover mx-auto mb-3 sm:mb-4 border-4 border-indigo-500"
-                    />
-                    <div>
-                      <p className="font-semibold text-lg sm:text-xl text-gray-900">
-                        {profile.name}
-                      </p>
-                      {profile.role && (
-                        <p className="text-sm sm:text-base text-gray-500">
-                          {profile.role}
+            {/* Activity Section */}
+            {event?.activity && (
+              <div className="flex justify-center md:justify-start mb-5">
+                <span className="inline-block px-5 py-2 text-lg sm:text-xl md:text-2xl font-semibold bg-white/20 backdrop-blur-md rounded-full border border-white/30 shadow-md">
+                  🏅 {event.activity}
+                </span>
+              </div>
+            )}
+
+            <p className="text-lg sm:text-xl md:text-2xl mb-1 md:mb-2 font-medium">
+              📅 {event?.date} | 🕒 {event?.time}
+            </p>
+            <p className="text-lg sm:text-xl md:text-2xl font-medium">
+              📍 {event?.location}
+            </p>
+          </div>
+
+          {/* Participants Slider */}
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-gray-800 text-center md:text-left">
+              Participants
+            </h2>
+            <div className="relative">
+              {/* Left Button */}
+              <button
+                onClick={() => scroll("left")}
+                className="hidden sm:flex absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-4 hover:bg-gray-100 text-xl sm:text-2xl transition"
+              >
+                ◀
+              </button>
+
+              {/* Slider */}
+              <div
+                ref={sliderRef}
+                className="flex overflow-x-auto gap-5 sm:gap-8 py-4 sm:py-6 scrollbar-hide scroll-smooth px-2"
+              >
+                {event?.participants && event.participants.length > 0 ? (
+                  event.participants.map((profile) => (
+                    <motion.div
+                      key={profile.id}
+                      onClick={() => openReview(profile.id)}
+                      className="min-w-[150px] sm:min-w-[180px] md:min-w-[200px] bg-white rounded-2xl md:rounded-3xl shadow-lg p-4 sm:p-6 flex-shrink-0 cursor-pointer hover:scale-105 transition-transform duration-300 text-center"
+                      whileHover={{ scale: 1.08 }}
+                    >
+                      <img
+                        src={profile.avatar}
+                        alt={profile.name}
+                        className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full object-cover mx-auto mb-3 sm:mb-4 border-4 border-indigo-500"
+                      />
+                      <div>
+                        <p className="font-semibold text-lg sm:text-xl text-gray-900">
+                          {profile.name}
                         </p>
-                      )}
-                    </div>
-                  </motion.div>
-                ))
-              ) : (
-                <p className="text-gray-500 text-lg text-center w-full">
-                  No participants yet for this event.
-                </p>
-              )}
-            </div>
+                        {profile.role && (
+                          <p className="text-sm sm:text-base text-gray-500">
+                            {profile.role}
+                          </p>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))
+                ) : (
+                  <p className="text-gray-500 text-lg text-center w-full">
+                    No participants yet for this event.
+                  </p>
+                )}
+              </div>
 
-            {/* Right Button */}
-            <button
-              onClick={() => scroll("right")}
-              className="hidden sm:flex absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-4 hover:bg-gray-100 text-xl sm:text-2xl transition"
-            >
-              ▶
-            </button>
+              {/* Right Button */}
+              <button
+                onClick={() => scroll("right")}
+                className="hidden sm:flex absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-2 sm:p-4 hover:bg-gray-100 text-xl sm:text-2xl transition"
+              >
+                ▶
+              </button>
+            </div>
           </div>
         </div>
       </div>
