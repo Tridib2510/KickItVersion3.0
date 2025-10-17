@@ -141,7 +141,9 @@ const Navbar: React.FC = () => {
           </div>
           {isLoggedIn ? (
             <div className="flex items-center space-x-6 ml-6">
-              <Link to='./notification'>
+              <Link to='./notification'
+                onClick={toggleMenu}
+                >
               <Bell size={50} color="#555" />
                 </Link>
 
