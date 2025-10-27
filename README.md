@@ -5,6 +5,13 @@ A full-stack web app for sports enthusiasts to **create**, **discover**, and **j
 
 ---
 
+| Page                | Preview                                   |
+| ------------------- | ----------------------------------------- |
+| 🏠 **Home Page**    | ![Home Page](https://res.cloudinary.com/dsloz7tfz/image/upload/v1761552250/Screenshot_2025-10-27_132840_oz3ds9.png)       |
+| 📅 **Event Page**   | ![Event Page](./assets/eventpage.png)     |
+| 👤 **Profile Page** | ![Profile Page](./assets/profilepage.png) |
+
+
 ## ✨ Features
 
 - 🔐 **User Auth & Profiles** – Secure JWT-based login with OAuth support.  
