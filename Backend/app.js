@@ -58,7 +58,9 @@ app.use('/KickIt',router)
 app.use('/KickIt',reviewRouter)
 
 
-
+app.get("/", (req, res) => {
+  res.status(200).send("KickIt API is running 🚀");
+});
 
 app.use('*',(req,res,next)=>{
     next(new AppError(`Can't find ${req.originalUrl}`,404))
