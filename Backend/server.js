@@ -27,21 +27,18 @@ let isConnected = false;
 const connectDB = async () => {
   if (isConnected) return;
 
-  try {
-    await mongoose.connect(DB, {
-      maxPoolSize: 10,
-      serverSelectionTimeoutMS: 5000,
-    });
+  await mongoose.connect(DB, {
+    useUnifiedTopology: true,
+    maxPoolSize: 10,
+    serverSelectionTimeoutMS: 5000,
+  });
 
-    isConnected = true;
-    console.log("Database is connected");
-  } catch (err) {
-    console.error("Mongo error:", err);
-    process.exit(1);
-  }
+  isConnected = true;
+  console.log("Database is connected");
 };
 
 connectDB();
+
 
 server.listen(8000,()=>{
     
