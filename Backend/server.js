@@ -23,7 +23,7 @@ process.on('uncaughtException',err=>{
     process.exit(1)
 })
 
-
+let isConnected = false;
 const connectDB = async () => {
   if (isConnected) return;
 
