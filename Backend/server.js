@@ -24,16 +24,24 @@ process.on('uncaughtException',err=>{
 })
 
 
-mongoose.connect(DB,{
-    useNewUrlParser:true,
-    useFindAndModify:false
-    
-   
-   
-}).then((con)=>{
-   
-    console.log('Database is connected')
-})
+const connectDB = async () => {
+  if (isConnected) return;
+
+  try {
+    await mongoose.connect(DB, {
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+    });
+
+    isConnected = true;
+    console.log("Database is connected");
+  } catch (err) {
+    console.error("Mongo error:", err);
+    process.exit(1);
+  }
+};
+
+connectDB();
 
 server.listen(8000,()=>{
     
