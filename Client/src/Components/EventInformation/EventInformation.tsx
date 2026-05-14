@@ -43,14 +43,6 @@ const activityImages: Record<string, string> = {
   Basketball,
 };
 
-const activityColors: Record<string, string> = {
-  Soccer: "from-green-500 to-emerald-600",
-  Cricket: "from-yellow-500 to-amber-600",
-  Badminton: "from-orange-500 to-orange-600",
-  Tennis: "from-blue-500 to-blue-600",
-  Basketball: "from-red-500 to-rose-600",
-};
-
 const activityBgColors: Record<string, string> = {
   Soccer: "bg-green-100 text-green-700",
   Cricket: "bg-yellow-100 text-yellow-700",

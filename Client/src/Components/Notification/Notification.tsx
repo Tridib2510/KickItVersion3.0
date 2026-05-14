@@ -57,7 +57,7 @@ const NotificationDropdown: React.FC = () => {
    console.log(socket)
 console.log(checkNotification)
     Socket?.on("send", (user, event) => {
-       console.log('senddddddddddddddddddddd')
+       
       setCheckNotification((prev) => !prev)
       setNotifications((prev) => [
         ...prev,

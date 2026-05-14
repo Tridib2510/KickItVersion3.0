@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import  { useState, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { Button } from "../ui/button";
@@ -6,7 +6,7 @@ import type { FormEvent } from 'react';
 import { useAuthStore } from "../../store/Auth";
 import toast from 'react-hot-toast';
 import SignupPopup from "../SignUp/SignUp";
-const LoginPopup = ({ Text }: { Text: string }) => {
+const LoginPopup = ({ Text }: { Text: ReactNode }) => {
   let setToken=useAuthStore(state=>state.setToken)
   let setUser=useAuthStore(state=>state.setUserId)
   const [isOpen, setIsOpen] = useState(false);

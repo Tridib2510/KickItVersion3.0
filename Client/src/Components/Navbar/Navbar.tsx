@@ -4,7 +4,6 @@ import { useAuthStore } from "../../store/Auth";
 import clsx from "clsx";
 import LoginPopup from "../Login/Login";
 import { Link } from "react-router-dom";
-import { CreateEventPopup } from "../CreateEvent/CreateEvent";
 import NotificationDropdown from "../Notification/Notification";
 
 const BackendKey = import.meta.env.VITE_BACKEND_KEY;
