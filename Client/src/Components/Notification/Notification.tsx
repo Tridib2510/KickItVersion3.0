@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react"
-import { Bell, X } from "lucide-react"
+import { BellRing, X } from "lucide-react"
 import clsx from "clsx"
 import { io, Socket } from "socket.io-client"
 import { useAuthStore } from "../../store/Auth"
@@ -198,9 +198,9 @@ console.log(checkNotification)
       }  
           
         }}
-        className="relative hover:text-indigo-400 transition-colors"
+        className="relative text-white hover:text-indigo-300 transition-colors"
       >
-        <Bell size={22} />
+        <BellRing size={22} />
         {unreadCount > 0 && (
           <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white font-bold">
             {unreadCount}
