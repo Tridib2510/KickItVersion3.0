@@ -1,163 +1,211 @@
-import React, { useEffect,useState } from "react";
-import { Calendar, MapPin } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Calendar, MapPin, Users, Clock } from "lucide-react";
 import { Button } from "../ui/button";
-import { io,Socket} from "socket.io-client"
+import { io, Socket } from "socket.io-client";
 import { useAuthStore } from "../../store/Auth";
-const BackendKey=import.meta.env.VITE_BACKEND_KEY
-import Soccer from "../../assets/Soccer.png"
-import Cricket from "../../assets/Cricket.png"
-import Badminton from "../../assets/Badminton.png"
-import Tennis from "../../assets/Tennis.png"
-import Basketball from "../../assets/Basketball.png"
+const BackendKey = import.meta.env.VITE_BACKEND_KEY;
+import Soccer from "../../assets/Soccer.png";
+import Cricket from "../../assets/Cricket.png";
+import Badminton from "../../assets/Badminton.png";
+import Tennis from "../../assets/Tennis.png";
+import Basketball from "../../assets/Basketball.png";
 import Spinner from "../Spinner.tsx/Spinner";
 
 type Event = {
   id: number;
   title: string;
   date: string;
-  createdBy?:string;
+  createdBy?: string;
   location: string;
   description: string;
   image: string;
-  activity:string
+  activity: string;
+  playersJoined?: number;
+  playersRequired?: number;
+  time?: string;
 };
 
-// const events: Event[] = [
-  // {
-  //   id: 1,
-  //   title: "Summer Coding Bootcamp",
-  //   date: "Aug 25, 2025 · 10:00 AM",
-  //   location: "Online",
-  //   description:
-  //     "Join our 2-week immersive bootcamp to learn full-stack web development from scratch.",
-  //   image:
-  //     "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80",
-  // },
-  // {
-  //   id: 2,
-  //   title: "Startup Pitch Night",
-  //   date: "Sep 02, 2025 · 6:30 PM",
-  //   location: "San Francisco, CA",
-  //   description:
-  //     "Watch top startups pitch their ideas to investors and industry leaders.",
-  //   image:
-  //     "https://images.unsplash.com/photo-1515165562835-c4cda4e9d8b6?w=800&q=80",
-  // },
-  // {
-  //   id: 3,
-  //   title: "Design Thinking Workshop",
-  //   date: "Sep 10, 2025 · 2:00 PM",
-  //   location: "New York, NY",
-  //   description:
-  //     "A hands-on workshop to unlock creativity and problem-solving skills through design thinking.",
-  //   image:
-  //     "https://images.unsplash.com/photo-1551836022-4c4c79ecde51?w=800&q=80",
-  // },
-// ];
- 
+const activityImages: Record<string, string> = {
+  Soccer,
+  Cricket,
+  Badminton,
+  Tennis,
+  Basketball,
+};
 
+const activityColors: Record<string, string> = {
+  Soccer: "bg-green-100 text-green-700",
+  Cricket: "bg-yellow-100 text-yellow-700",
+  Badminton: "bg-orange-100 text-orange-700",
+  Tennis: "bg-blue-100 text-blue-700",
+  Basketball: "bg-red-100 text-red-700",
+};
 
 const EventsSection: React.FC = () => {
   const id = useAuthStore((state) => state.userId);
-const [events, setEvents]= useState<Event[]>([]);
-const [userId,setUserId]=useState<string>()
-const [socket2, setSocket] = useState<Socket | null>(null)
-const [loading,setLoading]=useState(false)
-useEffect(()=>{
-const socket=io(`${BackendKey}`)
-setSocket(socket)
-setUserId(id)
-console.log(userId)
-console.log(socket2)
-},[])
-useEffect(() => {
-  const fetchEvents = async () => {
-    try {
-      setLoading(true); // spinner shows here
-      const response = await fetch(`${BackendKey}/KickIt/home`);
-      if (!response.ok) throw new Error("Failed to fetch events");
-      const data = await response.json();
+  const [events, setEvents] = useState<Event[]>([]);
+  const [userId, setUserId] = useState<string>();
+  const [socket2, setSocket] = useState<Socket | null>(null);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const socket = io(`${BackendKey}`);
+    setSocket(socket);
+    setUserId(id);
+    console.log(userId);
+    console.log(socket2);
+  }, []);
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${BackendKey}/KickIt/home`);
+        if (!response.ok) throw new Error("Failed to fetch events");
+        const data = await response.json();
 
-      const Events: Event[] = data.data.slice(0, 3).map((e: any) => ({
-        id: e._id,
-        title: e.eventName,
-        date: e.date,
-        location: e.venue,
-        description: e.Description,
-        image: e.image || Soccer,
-        activity: e.activity,
-      }));
+        const Events: Event[] = data.data.slice(0, 3).map((e: any) => ({
+          id: e._id,
+          title: e.eventName,
+          date: e.date,
+          location: e.venue,
+          description: e.Description,
+          image: e.image || Soccer,
+          activity: e.activity,
+          playersJoined: e.playersJoined?.length || 0,
+          playersRequired: e.playersRequired || 10,
+          time: e.time,
+        }));
 
-      setEvents(Events);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false); // spinner disappears only after fetch is done
-    }
+        setEvents(Events);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  const formatDate = (dateStr: string) => {
+    if (!dateStr) return "";
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    });
   };
-
-  fetchEvents();
-}, []);
 
   return (
     <section id="events" className="bg-gray-50 py-20">
       <div className="max-w-7xl mx-auto px-6">
-        {/* Section Title */}
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-4">
           Upcoming <span className="text-indigo-600">Events</span>
         </h2>
+        <p className="text-gray-500 text-center mb-12 max-w-2xl mx-auto">
+          Find and join sports events happening near you
+        </p>
 
-        {/* Events Grid */}
         {loading && <Spinner />}
 
-         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {events.map((event) => {
-           
-            
-            return(
-            <div
-              key={event.id}
-              className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
-            >
-              {/* Event Image */}
-              <img
-                src={event.activity==='Soccer'?Soccer:event.activity==='Cricket'?Cricket:event.activity==='Badminton'?Badminton:event.activity==='Tennis'?Tennis:Basketball}
-                alt={event.title}
-                className="w-full h-48 object-cover"
-              />
+            const spotsLeft =
+              (event.playersRequired || 10) - (event.playersJoined || 0);
+            const isFull = spotsLeft <= 0;
+            const isLowSpots = spotsLeft > 0 && spotsLeft <= 3;
 
-              {/* Event Details */}
-              <div className="p-6 flex flex-col justify-between h-full">
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                    {event.title}
-                  </h3>
-
-                  <div className="flex items-center text-gray-500 text-sm mb-2">
-                    <Calendar className="w-4 h-4 mr-2" />
-                    {event.date}
-                  </div>
-                  <div className="flex items-center text-gray-500 text-sm mb-4">
-                    <MapPin className="w-4 h-4 mr-2" />
-                    {event.location}
-                  </div>
-
-                  <p className="text-gray-600 text-sm leading-relaxed mb-6">
-                    {event.description}
-                  </p>
+            return (
+              <div
+                key={event.id}
+                className="group bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+              >
+                {/* Image with activity badge overlay */}
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={activityImages[event.activity] || Soccer}
+                    alt={event.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  {/* Activity Badge */}
+                  <span
+                    className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold ${
+                      activityColors[event.activity] ||
+                      "bg-gray-100 text-gray-700"
+                    }`}
+                  >
+                    {event.activity}
+                  </span>
+                  {/* Spots Badge */}
+                  {isFull ? (
+                    <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold bg-gray-900 text-white">
+                      Full
+                    </span>
+                  ) : isLowSpots ? (
+                    <span className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold bg-orange-500 text-white">
+                      {spotsLeft} spots left
+                    </span>
+                  ) : null}
                 </div>
 
-                <Button
-                  size="sm"
-                  className="w-full rounded-full bg-indigo-500 hover:bg-indigo-600"
-                >
-                  Join Event
-                </Button>
+                {/* Event Details */}
+                <div className="p-5 flex flex-col justify-between h-full">
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">
+                      {event.title}
+                    </h3>
+
+                    <div className="flex items-center gap-4 text-gray-500 text-sm mb-3">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span>{formatDate(event.date)}</span>
+                      </div>
+                      {event.time && (
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-3.5 h-3.5" />
+                          <span>{event.time}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-1 text-gray-500 text-sm mb-4">
+                      <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
+                      <span className="truncate">{event.location}</span>
+                    </div>
+
+                    <p className="text-gray-600 text-sm leading-relaxed line-clamp-2 mb-4">
+                      {event.description}
+                    </p>
+                  </div>
+
+                  {/* Players & Button */}
+                  <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                    <div className="flex items-center gap-1.5 text-sm">
+                      <Users className="w-4 h-4 text-indigo-500" />
+                      <span className="text-gray-600 font-medium">
+                        {event.playersJoined || 0}
+                      </span>
+                      <span className="text-gray-400">/</span>
+                      <span className="text-gray-500">
+                        {event.playersRequired || 10} players
+                      </span>
+                    </div>
+                    <Button
+                      size="sm"
+                      className={`rounded-full px-5 ${
+                        isFull
+                          ? "bg-gray-200 hover:bg-gray-200 text-gray-500 cursor-not-allowed"
+                          : "bg-indigo-500 hover:bg-indigo-600 text-white"
+                      }`}
+                      disabled={isFull}
+                    >
+                      {isFull ? "Full" : "Join"}
+                    </Button>
+                  </div>
+                </div>
               </div>
-            </div>
-          )}
-          
-          )}
+            );
+          })}
         </div>
       </div>
     </section>

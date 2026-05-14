@@ -18,32 +18,46 @@ interface HorizontalTweetCommentsWhiteProps {
 export const HorizontalTweetCommentsWhite: React.FC<HorizontalTweetCommentsWhiteProps> = ({
   comments = [
     {
-      name: "Rajdeep Seth",
-      handle: "@rajdeepseth1",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rajdeep",
+      name: "Rahul Sharma",
+      handle: "@rahul_cricket",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul",
       message:
-        "Stumbled upon ui.aceternity.com today and my mind is blown 🤯\nThe seamless integration of framer-motion, tailwind CSS, and shadcn showcases a masterclass in UI design. 🚀 Kudos to @mannupaaji for creating such an innovative and inspirational resource for devs! #UI #nextjs",
+        "Found a cricket match near me through KickIt! Exactly what I needed after a long week. 🏏⚡",
     },
     {
-      name: "Sarah Miller",
-      handle: "@sarahbuilds",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
+      name: "Priya Patel",
+      handle: "@priya_fitness",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Priya",
       message:
-        "This component animation feels *incredible*! 🔥 Love how smooth the transitions are — definitely using this in my next project.",
+        "Organized my first football game and had 12 people join within hours. The chat feature makes coordination so easy! ⚽",
     },
     {
-      name: "Aman Verma",
-      handle: "@amanv",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Aman",
+      name: "Amit Kumar",
+      handle: "@amit_basketball",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Amit",
       message:
-        "Framer Motion + Tailwind = ❤️  This combo makes building elegant UIs so much easier!",
+        "The badge system is genius! I earned my 10th badge today. This app actually makes me want to stay active. 🏀",
     },
     {
-      name: "Lisa K.",
-      handle: "@lisacodes",
-      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Lisa",
+      name: "Sneha Reddy",
+      handle: "@sneha_tennis",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sneha",
       message:
-        "UI perfection. ✨ Whoever designed this deserves a raise. So clean, so fluid!",
+        "Love how easy it is to find tennis partners nearby. No more playing alone! The ratings help find people at my level. 🎾",
+    },
+    {
+      name: "Vikram Singh",
+      handle: "@vikram_football",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Vikram",
+      message:
+        "Best app for finding pickup games. Created a weekend football league with 8 teams using KickIt! 🏆",
+    },
+    {
+      name: "Kavita Nair",
+      handle: "@kavita_badminton",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Kavita",
+      message:
+        "The join request system is so smooth. No more ghosting or last-minute cancellations. Really reliable community! 🏸",
     },
   ],
   speed = 60,

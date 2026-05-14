@@ -1,7 +1,7 @@
 const AppError = require("../utils/appError")
 
 const sendDevelopment=(err,res)=>{
-   
+
     res.status(err.statusCode).json({
         status:err.status,
         message:err.message,
@@ -38,11 +38,16 @@ const handleValidationErrorDB=err=>{
     const message=`${error.join('. ')}`
     return new AppError(message,400)
 }
+const handleDuplicateFieldsDB=err=>{
+    const value=err.errmsg?.match(/(["'])(?:(?=(\\?))\2.)*?\1/)?.[0]
+    const message=`Duplicate field value: ${value}. Please use another value`
+    return new AppError(message,400)
+}
 module.exports=(err,req,res,next)=>{
 
     err.statusCode=err.statusCode||500
     err.status=err.status||'error'
-    
+
     if(process.env.NODE_ENV==='development')
     sendDevelopment(err,res)
    else if(process.env.NODE_ENV==='production'){
