@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X, Home, Calendar } from "lucide-react";
+import { Menu, X, MessageCircle, Home, Calendar } from "lucide-react";
 import { useAuthStore } from "../../store/Auth";
 import clsx from "clsx";
 import LoginPopup from "../Login/Login";
